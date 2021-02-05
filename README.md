@@ -1,5 +1,5 @@
 # MP2
-Mini project 2 - alcohol consumption in pregnancy and pregancy complications in ALSPAC
+Mini project 2 - alcohol consumption in pregnancy and pregancy complications using ALSPAC
 
 Author: Flo Martin
 
