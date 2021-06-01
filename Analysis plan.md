@@ -57,7 +57,7 @@ We will also run a series of sensitivity analyses: (1) excluding participants' w
     - [ ] Replace any "Missing" or "Not stated" or -10 etc. categories with `.` for compatability with Stata
     - [ ] Switch the order of yes and no 1 and 2 to yes and no 0 and 1
     - [ ] Derive separate clean exposure variables of interest:
-        - `alcohol_use_ever` for any alcohol use any time during pregnancy
+        - `alcohol_preg` for any alcohol use any time during pregnancy: none (0), low-to-moderate (1) defined as 1 - 6 drinks per week & heavy (2) defined as 7+                drinks per week
         - `binge_drinking` for within alcohol users, binary variable for bingeing ever yes or no; no indicating low-to-moderate use
         - `alcohol_t1` `alcohol_t2` `alcohol_t3` for trimester-specific alcohol use
     - [ ] Derive clean outcome variable for placenta weight:birth weight ratio:
