@@ -154,6 +154,29 @@ replace pat_smoking_bin = 1 if pat_smoking >0 & pat_smoking !=.
 label values pat_smoking_bin bin_lb
 tab pat_smoking_bin
 
+* Partner marital status
+tab pa065
+replace pa065 =. if pa065 ==-1
+gen pat_married =.
+replace pat_married =0 if pa065 >=1 & pa065 <=4
+replace pat_married =1 if pa065 ==5 | pa065 ==6
+label values pat_married bin_lb
+tab pat_married
+
+* Partner ethnicity
+tab pat_ethn
+replace pat_ethn =. if pat_ethn ==-1
+* Binary partner ethnicity - White or non-white
+gen pat_ethn_bin =.
+replace pat_ethn_bin = 0 if pat_ethn ==1
+replace pat_ethn_bin = 1 if pat_ethn >1 & pat_ethn !=.
+label value pat_ethn_bin ethn_lb
+tab pat_ethn_bin
+
+* Highest partner educational attainment
+tab pat_edu
+replace pat_edu =. if pat_edu ==-1
+
 * Maternal variables cleaning script lifted from Cleaning CCA data.do
 
 * Cleaning variables related to exposure (alcohol consumption during pregnancy)
