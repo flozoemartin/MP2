@@ -658,6 +658,9 @@ replace mat_ethn_bin = 1 if mat_ethn >1 & mat_ethn !=.
 label values mat_ethn_bin ethn_lb
 tab mat_ethn_bin
 
+* We want to drop those who have pre-existing hypertension as we are measuring incidence not prevalence
+drop if prev_hyp ==1
+
 * Drop incomplete maternal variables as done for the CCA cohort
 drop if alcohol_preg ==.
 drop if mat_bmi ==. 
