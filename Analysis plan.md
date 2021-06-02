@@ -14,7 +14,7 @@ In order to investigate any residual confounding by socioeconomic position (SEP)
 
 We will also run a series of sensitivity analyses: (1) excluding participants' who responded after 20 weeks' gestation, (2) excluding participants' who abstained from alcohol prior to pregnancy, (3) stratifying smoking covariate by number smoked per day (categorical) as opposed to any/none during pregnancy (binary), and (4) using pre-pregnancy drinking as the exposure. 
 
-### Section 1 - Preparing & cleaning the ALSPAC data
+## Section 1 - Preparing & cleaning the ALSPAC data
 
 - [x] _**Extract ALSPAC Data**_
     - [x] Extract variables for the maternal **exposure**: alcohol use in pregnancy from prenatal questionnaires B & E:
@@ -81,7 +81,7 @@ We will also run a series of sensitivity analyses: (1) excluding participants' w
 
 At this stage, will have two datasets derived from the extract: `mp2_cca.dta` for the primary & sensitivity analyses (which includes complete maternal cases) and `mp2_nca.dta` for the negative control analyses (which includes complete maternal & partner cases)
 
-### Section 2 - Analysing the data
+## Section 2 - Analysing the data
 
 - [x] _**Negative control analysis of drinking during pregnancy in `mp2_cca.dta` & `mp2_nca.dta`**_
     
@@ -154,5 +154,9 @@ At this stage, will have two datasets derived from the extract: `mp2_cca.dta` fo
     - Exclude those who abstained from alcohol prior to pregnancy
     - Stratify smoking covariate by number smoked per day
     - Use pre-pregnancy alcohol use as the exposure
-        
-:tada: Finished Mini Project Two! :tada:  
+
+## Section 3 - Writing up
+Write up the manuscript for this work with a journal in mind (Hypertension?).
+
+
+:tada: **Finished Mini Project Two**! :tada:  
