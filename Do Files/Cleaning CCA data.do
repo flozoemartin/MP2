@@ -8,12 +8,12 @@
 
 * Contents *
 * line 24 - Labels *
-* line 55 - Exposure variables *
-* line 328 - Outcome variables *
-* line 341 - Confounder variables *
-* line 541 - Saving clean dataset *
-* line 543 - Sensitivity analysis variables *
-* line 615 - Saving clean complete case dataset *
+* line 63 - Exposure variables *
+* line 336 - Outcome variables *
+* line 349 - Confounder variables *
+* line 549 - Saving clean dataset *
+* line 551 - Sensitivity analysis variables *
+* line 623 - Saving clean complete case dataset *
 
 cd "/Users/ti19522/OneDrive - University of Bristol/Documents/PhD/Year 1/Mini Project 2/Analysis"
 use mp2.dta, clear
@@ -51,6 +51,14 @@ rename c645a mat_edu
 rename pb325a pat_edu
 rename c800 mat_ethn
 rename pb440 pat_ethn
+
+* Variables denoting when questionnaires were filled out
+tab a902, nolabel
+replace a902 =. if a902 ==-1
+tab b924
+replace b924 =. if b924 ==-1
+tab c991
+replace c991 =. if c991 <0
 
 * Cleaning variables related to exposure (alcohol consumption during pregnancy)
 * As per the meeting discussion on 24/02, answers from A and C questionnaires were deemed unreliable, thus we will build our exposed/unexposed cohort using B and E questionnaires
