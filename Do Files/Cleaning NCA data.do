@@ -9,10 +9,10 @@
 * Contents *
 * line 23 - Labels *
 * line 62 - Partner variables *
-* line 53 - Exposure *
+* line 63 - Exposure *
 * line 102 - Confounder variables *
-* line 165 - Maternal variables *
-* line 668 - save NCA dataset *
+* line 188 - Maternal variables *
+* line 694 - save NCA dataset *
 
 cd "/Users/ti19522/OneDrive - University of Bristol/Documents/PhD/Year 1/Mini Project 2/Analysis"
 use mp2.dta, clear
