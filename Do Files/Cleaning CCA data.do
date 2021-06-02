@@ -9,11 +9,11 @@
 * Contents *
 * line 24 - Labels *
 * line 63 - Exposure variables *
-* line 336 - Outcome variables *
-* line 349 - Confounder variables *
-* line 549 - Saving clean dataset *
-* line 551 - Sensitivity analysis variables *
-* line 623 - Saving clean complete case dataset *
+* line 326 - Outcome variables *
+* line 339 - Confounder variables *
+* line 539 - Saving clean dataset *
+* line 541 - Sensitivity analysis variables *
+* line 662 - Saving clean complete case dataset *
 
 cd "/Users/ti19522/OneDrive - University of Bristol/Documents/PhD/Year 1/Mini Project 2/Analysis"
 use mp2.dta, clear
@@ -298,18 +298,13 @@ replace beer_cat = 2 if b754_cat ==2 & b757_cat ==0
 label values beer_cat cat_lb
 tab beer_cat
 
-* Binary variables for characteristic comparisons
-gen beer_cat_ltm =.
-replace beer_cat_ltm = 0 if beer_cat ==0
-replace beer_cat_ltm = 1 if beer_cat ==1
-label values beer_cat_ltm ltm_none_lb
-tab beer_cat_ltm
-
-gen beer_cat_heavy =.
-replace beer_cat_heavy = 0 if beer_cat ==0
-replace beer_cat_heavy = 1 if beer_cat ==2
-label values beer_cat_heavy heavy_none_lb
-tab beer_cat_heavy
+* Collapsing beer categories
+tab beer_cat, nolabel
+gen beer_bin =.
+replace beer_bin = 0 if beer_cat ==0
+replace beer_bin = 1 if beer_cat ==1 | beer_cat ==2
+label values beer_bin bin_lb
+tab beer_bin
 
 * Wine
 tab b757_cat
@@ -320,18 +315,13 @@ replace wine_cat = 2 if b757_cat ==2 & b754_cat ==0
 label values wine_cat cat_lb
 tab wine_cat
 
-* Binary variables for characteristic comparisons
-gen wine_cat_ltm =.
-replace wine_cat_ltm = 0 if wine_cat ==0
-replace wine_cat_ltm = 1 if wine_cat ==1
-label values wine_cat_ltm ltm_none_lb
-tab wine_cat_ltm
-
-gen wine_cat_heavy =.
-replace wine_cat_heavy = 0 if wine_cat ==0
-replace wine_cat_heavy = 1 if wine_cat ==2
-label values wine_cat_heavy heavy_none_lb
-tab wine_cat_heavy
+* Collapsing wine categories
+tab wine_cat, nolabel
+gen wine_bin =.
+replace wine_bin = 0 if wine_cat ==0
+replace wine_bin = 1 if wine_cat ==1 | wine_cat ==2
+label values wine_bin bin_lb
+tab wine_bin
 
 * Variables related to outcomes - obstretic variables below already clean
 tab HDP
@@ -591,6 +581,55 @@ replace heavy_binge_none = 0 if alcohol_preg ==0
 replace heavy_binge_none = 1 if alcohol_preg_binge ==3
 label values heavy_binge_none heavy_binge_none_lb
 tab heavy_binge_none
+
+* Extra variables for beer wine analysis supplementary material
+
+* Binary variables for characteristic comparisons in beer drinkers
+gen beer_cat_ltm =.
+replace beer_cat_ltm = 0 if beer_cat ==0
+replace beer_cat_ltm = 1 if beer_cat ==1
+label values beer_cat_ltm ltm_none_lb
+tab beer_cat_ltm
+
+gen beer_cat_heavy =.
+replace beer_cat_heavy = 0 if beer_cat ==0
+replace beer_cat_heavy = 1 if beer_cat ==2
+label values beer_cat_heavy heavy_none_lb
+tab beer_cat_heavy
+
+* Binary variables for characteristic comparisons in wine drinkers
+gen wine_cat_ltm =.
+replace wine_cat_ltm = 0 if wine_cat ==0
+replace wine_cat_ltm = 1 if wine_cat ==1
+label values wine_cat_ltm ltm_none_lb
+tab wine_cat_ltm
+
+gen wine_cat_heavy =.
+replace wine_cat_heavy = 0 if wine_cat ==0
+replace wine_cat_heavy = 1 if wine_cat ==2
+label values wine_cat_heavy heavy_none_lb
+tab wine_cat_heavy
+
+* Generating variable for beer not wine vs non-drinker
+gen pure_beer =.
+replace pure_beer = 1 if beer_bin ==1 & wine_bin ==0
+replace pure_beer = 0 if alcohol_preg ==0
+label values pure_beer bin_lb
+tab pure_beer
+
+* Generating variable for wine not beer vs non-drinker
+gen pure_wine =.
+replace pure_wine = 1 if wine_bin ==1 & beer_bin ==0
+replace pure_wine = 0 if alcohol_preg ==0
+label values pure_wine bin_lb
+tab pure_wine
+
+* Generating variable to compare binge/extra drinking in each group
+gen beer_wine =.
+replace beer_wine = 1 if pure_wine ==1
+replace beer_wine = 0 if pure_beer ==1
+label values beer_wine beer_wine_lb
+tab beer_wine
 
 * Categorical variable of average cigarettes smoked per day in pregnancy using the max amount they reported anytime during pregnancy - to adequately build the variable, I need to rely on missing values so here I drop if the binary variable for smoking during pregnancy is missing (therefore not a complete cases and being dropped from the analysis anyway) to build stratified smoking covariate
 drop if smoking_preg ==.
