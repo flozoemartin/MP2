@@ -1,19 +1,19 @@
 
-* Preparing complete case MP2 dataset for analysis - since meeting 24/02
+* Data cleaning of data extract (ALSPAC) from 08/02/2021 for mini project 2 - alcohol during pregnancy and HDP *
 
-* Author: Flo Martin
+* Author: Flo Martin *
 
-* Date started: 08/02/2021
-* Date finished: 02/06/2021
+* Date started: 08/02/2021 *
+* Date finished: 02/06/2021 *
 
-* Contents
-line 24 - Labels
-line 55 - Exposure variables
-line 328 - Outcome variables
-line 341 - Covariates
-line 535 - Saving clean dataset
-line 537 - Sensitivity analysis variables
-line 609 - Saving clean complete case dataset
+* Contents *
+* line 24 - Labels *
+* line 55 - Exposure variables *
+* line 328 - Outcome variables *
+* line 341 - Confounder variables *
+* line 535 - Saving clean dataset *
+* line 537 - Sensitivity analysis variables *
+* line 609 - Saving clean complete case dataset *
 
 cd "/Users/ti19522/OneDrive - University of Bristol/Documents/PhD/Year 1/Mini Project 2/Analysis"
 use mp2.dta, clear
