@@ -11,8 +11,8 @@
 * line 63 - Exposure variables *
 * line 326 - Outcome variables *
 * line 339 - Confounder variables *
-* line 539 - Saving clean dataset *
-* line 541 - Sensitivity analysis variables *
+* line 532 - Sensitivity analysis variables (additional smoking variable line 634) *
+* line 631 - Saving clean dataset *
 * line 662 - Saving clean complete case dataset *
 
 cd "/Users/ti19522/OneDrive - University of Bristol/Documents/PhD/Year 1/Mini Project 2/Analysis"
@@ -529,15 +529,6 @@ replace mat_ethn_bin = 1 if mat_ethn >1 & mat_ethn !=.
 label values mat_ethn_bin ethn_lb
 tab mat_ethn_bin
 
-* Complete cases
-gen cc =.
-replace cc = 0 if alcohol_preg ==. | mat_bmi ==. | matage_del ==. | mat_edu ==. | marital_status ==. | prepreg_smoking ==. | smoking_preg ==. | parity ==. | mat_ethn ==. | prepreg_cat ==. | HDP ==.
-replace cc = 1 if alcohol_preg !=. & mat_bmi !=. & matage_del !=. & mat_edu !=. & marital_status !=. & prepreg_smoking !=. & smoking_preg !=. & parity !=. & mat_ethn !=. & prepreg_cat !=. & HDP !=.
-tab cc
-
-* Save full clean dataset for analysis of missing data
-save mp2_clean.dta, replace
-
 * Variables needed for sensitivity analysis 
 
 * Using pre-pregnancy categorical drinking as the exposure
@@ -630,6 +621,15 @@ replace beer_wine = 1 if pure_wine ==1
 replace beer_wine = 0 if pure_beer ==1
 label values beer_wine beer_wine_lb
 tab beer_wine
+
+* Complete cases
+gen cc =.
+replace cc = 0 if alcohol_preg ==. | mat_bmi ==. | matage_del ==. | mat_edu ==. | marital_status ==. | prepreg_smoking ==. | smoking_preg ==. | parity ==. | mat_ethn ==. | HDP ==.
+replace cc = 1 if alcohol_preg !=. & mat_bmi !=. & matage_del !=. & mat_edu !=. & marital_status !=. & prepreg_smoking !=. & smoking_preg !=. & parity !=. & mat_ethn !=. & HDP !=.
+tab cc
+
+* Save full clean dataset for analysis of missing data
+save mp2_clean.dta, replace
 
 * Categorical variable of average cigarettes smoked per day in pregnancy using the max amount they reported anytime during pregnancy - to adequately build the variable, I need to rely on missing values so here I drop if the binary variable for smoking during pregnancy is missing (therefore not a complete cases and being dropped from the analysis anyway) to build stratified smoking covariate
 drop if smoking_preg ==.
