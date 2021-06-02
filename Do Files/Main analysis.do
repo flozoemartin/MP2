@@ -7,10 +7,27 @@
 * Date finished: 02/06/2021
 
 * Contents *
-* line - Primary analysis in the full maternal cohort: maternal drinking and HDP
-* line - Primary analysis in the negative control cohort: maternal drinking and HDP, both adjusted & mutually adjusted
-* line - Negative control analysis in NCA cohort: partner drinking and HDP, both adjusted & mutually adjusted
-* line - Positive control analysis of NCA: mother/partner smoking during pregnancy and HDP, both adjusted & mutually adjusted
+* line 35 - Characteristic comparison for table 1
+
+* Negative control analysis
+* line 57 - Primary analysis in the full maternal cohort: maternal drinking and HDP, unadjusted & adjusted
+* line 99 - Primary analysis in the negative control cohort: maternal drinking and HDP, unadjusted, adjusted & mutually adjusted
+* line 137 - Negative control analysis in negative control cohort: partner drinking and HDP, unadjusted, adjusted & mutually adjusted
+
+* Positive control analysis 
+* line 181 - Positive control analysis of NCA in full maternal cohort: maternal smoking during pregnancy and HDP, unadjusted & adjusted
+* line 202 - Positive control analysis of NCA in negative control cohort: maternal smoking during pregnancy and HDP, unadjusted, adjusted & mutually adjusted
+* line 224 - Positive control analysis of NCA in negative control cohort: partner smoking during pregnancy and HDP, unadjusted, adjusted & mutually adjusted
+
+* Beer wine analysis 
+* line 259 - Beer
+* line 290 - Wine
+
+* Sensitivity analyses
+* line 322 - Using pre-pregnancy alcohol use as the exposure
+* line 357 - Stratifying smoking covariate from binary into categorical (number smoked per day during pregnancy)
+* line 389 - Excluding those who responded to questionnaire B post-20 weeks' gestation
+* line 431 - Excluding those who reported to abstain from alcohol prior to pregnancy
 
 cd "/Users/ti19522/OneDrive - University of Bristol/Documents/PhD/Year 1/Mini Project 2/Analysis"
 use mp2_cca.dta, replace
@@ -80,7 +97,6 @@ mlogit hdp_cat alcohol_preg, base(0) rrr
 mlogit hdp_cat alcohol_preg mat_bmi matage_del smoking_preg prepreg_smoking i.mat_edu married_bin i.parity_cat mat_ethn_bin, base(0) rrr
 
 * Primary analysis but in the negative control cohort
-cd "/Users/ti19522/OneDrive - University of Bristol/Documents/PhD/Year 1/Mini Project 2/Analysis"
 use mp2_nca.dta, clear
 
 * Population
@@ -453,6 +469,3 @@ lrtest A B
 * Multinomial logistic regression analysis - alcohol consumption during pregnancy (excluding pre-pregnancy abstainers) ~ hdp_cat, unadjusted & adjusted
 mlogit hdp_cat alcohol_preg if prepreg_cat !=0, base(0) rrr
 mlogit hdp_cat alcohol_preg mat_bmi matage_del smoking_preg prepreg_smoking i.mat_edu married_bin i.parity_cat mat_ethn_bin if prepreg_cat !=0, base(0) rrr
-
-* Supplementary material
-
