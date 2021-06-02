@@ -8,11 +8,11 @@
 
 * Contents *
 * line 23 - Labels *
-* line 54 - Partner variables *
-* line 55 - Exposure *
-* line 94 - Confounder variables *
-* line 157 - Maternal variables *
-* line 660 - save NCA dataset *
+* line 62 - Partner variables *
+* line 53 - Exposure *
+* line 102 - Confounder variables *
+* line 165 - Maternal variables *
+* line 668 - save NCA dataset *
 
 cd "/Users/ti19522/OneDrive - University of Bristol/Documents/PhD/Year 1/Mini Project 2/Analysis"
 use mp2.dta, clear
@@ -50,6 +50,14 @@ rename c645a mat_edu
 rename pb325a pat_edu
 rename c800 mat_ethn
 rename pb440 pat_ethn
+
+* Variables denoting when questionnaires were filled out
+tab a902, nolabel
+replace a902 =. if a902 ==-1
+tab b924
+replace b924 =. if b924 ==-1
+tab c991
+replace c991 =. if c991 <0
 
 * Partner variables 
 * Exposure
