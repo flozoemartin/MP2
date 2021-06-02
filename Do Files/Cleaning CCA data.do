@@ -6,6 +6,15 @@
 * Date started: 08/02/2021
 * Date finished: 02/06/2021
 
+* Contents
+line 24 - Labels
+line 55 - Exposure variables
+line 328 - Outcome variables
+line 341 - Covariates
+line 535 - Saving clean dataset
+line 537 - Sensitivity analysis variables
+line 609 - Saving clean complete case dataset
+
 cd "/Users/ti19522/OneDrive - University of Bristol/Documents/PhD/Year 1/Mini Project 2/Analysis"
 use mp2.dta, clear
 
