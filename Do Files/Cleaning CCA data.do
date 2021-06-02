@@ -11,9 +11,9 @@
 * line 55 - Exposure variables *
 * line 328 - Outcome variables *
 * line 341 - Confounder variables *
-* line 535 - Saving clean dataset *
-* line 537 - Sensitivity analysis variables *
-* line 609 - Saving clean complete case dataset *
+* line 541 - Saving clean dataset *
+* line 543 - Sensitivity analysis variables *
+* line 615 - Saving clean complete case dataset *
 
 cd "/Users/ti19522/OneDrive - University of Bristol/Documents/PhD/Year 1/Mini Project 2/Analysis"
 use mp2.dta, clear
@@ -530,6 +530,12 @@ replace mat_ethn_bin = 0 if mat_ethn ==1
 replace mat_ethn_bin = 1 if mat_ethn >1 & mat_ethn !=.
 label values mat_ethn_bin ethn_lb
 tab mat_ethn_bin
+
+* Complete cases
+gen cc =.
+replace cc = 0 if alcohol_preg ==. | mat_bmi ==. | matage_del ==. | mat_edu ==. | marital_status ==. | prepreg_smoking ==. | smoking_preg ==. | parity ==. | mat_ethn ==. | prepreg_cat ==. | HDP ==.
+replace cc = 1 if alcohol_preg !=. & mat_bmi !=. & matage_del !=. & mat_edu !=. & marital_status !=. & prepreg_smoking !=. & smoking_preg !=. & parity !=. & mat_ethn !=. & prepreg_cat !=. & HDP !=.
+tab cc
 
 * Save full clean dataset for analysis of missing data
 save mp2_clean.dta, replace
