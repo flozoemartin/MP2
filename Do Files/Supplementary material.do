@@ -21,7 +21,7 @@
 * line - Table 15 Comparison of HDP in low-to-moderate, heavy non-binge & heavy binge drinkers using logistic regression and multinomial logistic regression
 
 * Missing data exploration (as per framework set out by Lee et al. (2021))
-cd "/Users/ti19522/OneDrive - University of Bristol/Documents/PhD/Year 1/Mini Project 2/Analysis"
+cd "/location/of/the/data"
 
 * Table 1 Summary of variables in the full cohort & restricted (complete case) cohort for exposure, outcome & covariates
 use mp2_clean.dta, replace
