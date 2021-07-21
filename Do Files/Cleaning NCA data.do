@@ -14,7 +14,7 @@
 * line 188 - Maternal variables *
 * line 694 - save NCA dataset *
 
-cd "/Users/ti19522/OneDrive - University of Bristol/Documents/PhD/Year 1/Mini Project 2/Analysis"
+cd "/location/of/the/data"
 use mp2.dta, clear
 
 * As we're investigating maternal exposures & outcomes, we don't need qlet = B otherwise mum's of multiple pregnancies will be counted twice
