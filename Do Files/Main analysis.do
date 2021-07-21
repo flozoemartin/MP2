@@ -29,7 +29,7 @@
 * line 389 - Excluding those who responded to questionnaire B post-20 weeks' gestation
 * line 431 - Excluding those who reported to abstain from alcohol prior to pregnancy
 
-cd "/Users/ti19522/OneDrive - University of Bristol/Documents/PhD/Year 1/Mini Project 2/Analysis"
+cd "/location/of/the/data"
 use mp2_cca.dta, replace
 
 * Table 1 - characterisitics of low-to-moderate and heavy drinkers as compared with non-drinkers during pregnancy
