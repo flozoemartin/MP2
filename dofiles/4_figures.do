@@ -5,12 +5,12 @@
 
 * Date started: 01/05/2021 *
 
-* Date finished: 02/06/2021 *
+* Date finished: 05/10/2021 *
 
 * Contents *
-* line 15 - Figure 2 Negative control analysis *
-* line 95 - Figure 3 Beer wine analysis *
-* line 154 - Figure 4 Sensitivity analyses *
+* line 24 - Figure 2 Negative control analysis *
+* line 104 - Figure 3 Beer wine analysis *
+* line 163 - Figure 4 Sensitivity analyses *
 
 * Start logging
 log using "$Logdir/log_figures.txt", text replace

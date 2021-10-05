@@ -4,31 +4,30 @@
 * Author: Flo Martin
 
 * Date started: 26/02/2021
-* Date finished: 02/06/2021
+* Date finished: 05/10/2021
 
 * Contents *
-* line 35 - Characteristic comparison for table 1
+* line 39 - Characteristic comparison for table 1
 
 * Negative control analysis
-* line 57 - Primary analysis in the full maternal cohort: maternal drinking and HDP, unadjusted & adjusted
-* line 99 - Primary analysis in the negative control cohort: maternal drinking and HDP, unadjusted, adjusted & mutually adjusted
-* line 137 - Negative control analysis in negative control cohort: partner drinking and HDP, unadjusted, adjusted & mutually adjusted
+* line 61 - Primary analysis in the full maternal cohort: maternal drinking and HDP, unadjusted & adjusted
+* line 103 - Primary analysis in the negative control cohort: maternal drinking and HDP, unadjusted, adjusted & mutually adjusted
+* line 141 - Negative control analysis in negative control cohort: partner drinking and HDP, unadjusted, adjusted & mutually adjusted
 
 * Positive control analysis 
-* line 181 - Positive control analysis of NCA in full maternal cohort: maternal smoking during pregnancy and HDP, unadjusted & adjusted
-* line 202 - Positive control analysis of NCA in negative control cohort: maternal smoking during pregnancy and HDP, unadjusted, adjusted & mutually adjusted
-* line 224 - Positive control analysis of NCA in negative control cohort: partner smoking during pregnancy and HDP, unadjusted, adjusted & mutually adjusted
+* line 185 - Positive control analysis of NCA in full maternal cohort: maternal smoking during pregnancy and HDP, unadjusted & adjusted
+* line 206 - Positive control analysis of NCA in negative control cohort: maternal smoking during pregnancy and HDP, unadjusted, adjusted & mutually adjusted
+* line 228 - Positive control analysis of NCA in negative control cohort: partner smoking during pregnancy and HDP, unadjusted, adjusted & mutually adjusted
 
 * Beer wine analysis 
-* line 259 - Beer
-* line 290 - Wine
+* line 263 - Beer
+* line 294 - Wine
 
 * Sensitivity analyses
-* line 322 - Using pre-pregnancy alcohol use as the exposure
-* line 357 - Stratifying smoking covariate from binary into categorical (number smoked per day during pregnancy)
-* line 389 - Excluding those who responded to questionnaire B post-20 weeks' gestation
-* line 431 - Excluding those who reported to abstain from alcohol prior to pregnancy
-
+* line 326 - Using pre-pregnancy alcohol use as the exposure
+* line 361 - Stratifying smoking covariate from binary into categorical (number smoked per day during pregnancy)
+* line 393 - Excluding those who responded to questionnaire B post-20 weeks' gestation
+* line 435 - Excluding those who reported to abstain from alcohol prior to pregnancy
 
 * Start logging
 log using "$Logdir/log_analysis.txt", text replace

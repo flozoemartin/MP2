@@ -4,21 +4,21 @@
 * Author: Flo Martin
 
 * Date started: 01/05/2021
-* Date finished: 02/06/2021
+* Date finished: 05/10/2021
 
 * Contents *
 * Missing data exploration
-* line - Table 1 Summary of variables in the full cohort & restricted (complete case) cohort for exposure, outcome & covariates
-* line - Table 2 Predictors of being a complete case in available data for each variable in the analysis
+* line 29 - Table 1 Summary of variables in the full cohort & restricted (complete case) cohort for exposure, outcome & covariates
+* line 37 - Table 2 Predictors of being a complete case in available data for each variable in the analysis
 
 * Beer wine analysis 
-* line - Table 9 Characteristics of beer drinkers (low-to-moderate & heavy) compared with non-drinkers
-* line - Table 11 Characteristics of wine drinkers (low-to-moderate & heavy) compared with non-drinkers
-* line - Table 13 Prevalence of binge drinking & other alcohol consumption in beer/wine drinkers
+* line 47 - Table 9 Characteristics of beer drinkers (low-to-moderate & heavy) compared with non-drinkers
+* line 68 - Table 11 Characteristics of wine drinkers (low-to-moderate & heavy) compared with non-drinkers
+* line 90 - Table 13 Prevalence of binge drinking & other alcohol consumption in beer/wine drinkers
 
 * Analysis of binge drinkers
-* line - Table 14 Characteristics of low-to-moderate, heavy non-binge & heavy binge compared with non-drinkers
-* line - Table 15 Comparison of HDP in low-to-moderate, heavy non-binge & heavy binge drinkers using logistic regression and multinomial logistic regression
+* line 98 - Table 14 Characteristics of low-to-moderate, heavy non-binge & heavy binge compared with non-drinkers
+* line 121 - Table 15 Comparison of HDP in low-to-moderate, heavy non-binge & heavy binge drinkers using logistic regression and multinomial logistic regression
 
 * Start logging
 log using "$Logdir/log_supplementary.txt", text replace

@@ -4,15 +4,15 @@
 * Author: Flo Martin *
 
 * Date started: 15/03/2021 *
-* Date finished: 02/06/2021 *
+* Date finished: 05/10/2021 *
 
 * Contents *
-* line 23 - Labels *
-* line 62 - Partner variables *
+* line 27 - Labels *
+* line 66 - Partner variables *
 * line 63 - Exposure *
-* line 102 - Confounder variables *
-* line 188 - Maternal variables *
-* line 694 - save NCA dataset *
+* line 106 - Confounder variables *
+* line 192 - Maternal variables *
+* line 698 - save NCA dataset *
 
 * Start logging
 log using "$Logdir/log_cleaning_pat.txt", text replace

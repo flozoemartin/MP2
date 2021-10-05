@@ -27,11 +27,11 @@ do "$Dodir/3_analysis.do"		// Descriptive & substantive analyses
 
 
 * 4 - Figures
-do "$Dodir/4_figures.do"		// Create figures 2 & 3
+do "$Dodir/4_figures.do"		// Create figures 2, 3 & 4
 
 
 * 5 - Supplementary				
-do "$Dodir/5_supplementary.do"	// Generate supplementary material (figures & tables)
+do "$Dodir/5_supplementary.do"	// Generate supplementary material (for populating tables)
 
 
 

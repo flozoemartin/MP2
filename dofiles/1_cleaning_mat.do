@@ -4,16 +4,16 @@
 * Author: Flo Martin *
 
 * Date started: 08/02/2021 *
-* Date finished: 02/06/2021 *
+* Date finished: 05/10/2021 *
 
 * Contents *
-* line 24 - Labels *
-* line 63 - Exposure variables *
-* line 326 - Outcome variables *
-* line 339 - Confounder variables *
-* line 532 - Sensitivity analysis variables (additional smoking variable line 634) *
-* line 631 - Saving clean dataset *
-* line 662 - Saving clean complete case dataset *
+* line 28 - Labels *
+* line 67 - Exposure variables *
+* line 330 - Outcome variables *
+* line 343 - Confounder variables *
+* line 536 - Sensitivity analysis variables (additional smoking variable line 634) *
+* line 635 - Saving clean dataset *
+* line 666 - Saving clean complete case dataset *
 
 * Start logging
 log using "$Logdir/log_cleaning_mat.txt", text replace
