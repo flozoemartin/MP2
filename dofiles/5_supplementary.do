@@ -20,9 +20,13 @@
 * line - Table 14 Characteristics of low-to-moderate, heavy non-binge & heavy binge compared with non-drinkers
 * line - Table 15 Comparison of HDP in low-to-moderate, heavy non-binge & heavy binge drinkers using logistic regression and multinomial logistic regression
 
-* Missing data exploration (as per framework set out by Lee et al. (2021))
-cd "/location/of/the/data"
+* Start logging
+log using "$Logdir/log_supplementary.txt", text replace
 
+* Change the directory to the location of the data
+cd "$Projectdir/datafiles"
+
+* Missing data exploration (as per framework set out by Lee et al. (2021))
 * Table 1 Summary of variables in the full cohort & restricted (complete case) cohort for exposure, outcome & covariates
 use mp2_clean.dta, replace
 tab1 alcohol_preg mat_age_cat bmi_cat prepreg_smoking smoking_preg parity_bin mat_ethn_bin mat_degree married_bin hdp_cat 
@@ -155,3 +159,6 @@ lrtest A B
 * Multinomial logistic regression analysis - alcohol consumption during pregnancy ~ hdp_cat, unadjusted & adjusted
 mlogit hdp_cat alcohol_preg_binge, base(0) rrr
 mlogit hdp_cat alcohol_preg_binge mat_bmi matage_del smoking_preg prepreg_smoking i.mat_edu married_bin i.parity_cat mat_ethn_bin, base(0) rrr
+
+* Stop logging
+log close

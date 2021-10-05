@@ -12,6 +12,13 @@
 * line 95 - Figure 3 Beer wine analysis *
 * line 154 - Figure 4 Sensitivity analyses *
 
+* Start logging
+log using "$Logdir/log_figures.txt", text replace
+
+* Change directory for saving graphs
+cd "$Projectdir/graphfiles"
+
+* Install package for combining graphs
 net install grc1leg, from (http://www.stata.com/users/vwiggins)
 
 * Figure 2 - negative control analysis 
@@ -91,8 +98,12 @@ twoway  (rcap lci uci id, horizontal) ///
 		text(3.73 0.22 "{bf}Partner's smoking", size(small)) ///
 		fxsize(55) fysize(100) ///
 		name(pat, replace) 
-		
+
+* Combine sections of the graph
 grc1leg2 mat pat, row(1) ring(1) pos(5) graphregion(color(white)) legendfrom(mat) name(fig_2, replace)
+
+* Save figure 2 as .tif in graphfiles
+graph export fig_2.tif, name(fig_2) replace
 
 * Figure 3 - beer and wine analysis
 * Using beer drinking as the exposure (binary any/none)
@@ -149,8 +160,12 @@ twoway  (rcap lci uci id, horizontal) ///
 		text(0.93 0.385 "{bf}Wine", size(small)) ///
 		fxsize(65) fysize(50) ///
 		name(wine, replace) 
-		
+
+* Combine sections of the graph
 graph combine beer wine, row(1) graphregion(color(white)) name(fig_3, replace)
+
+* Save figure 3 as .tif in graphfiles
+graph export fig_3.tif, name(fig_3) replace
 
 * Figure 4 - four sensitivity analyses
 * Using pre-pregnancy drinking as the exposure & excluding those who responded after 20 weeks' gestation
@@ -229,4 +244,11 @@ twoway  (rcap lci uci id, horizontal) ///
 		fxsize(55) fysize(100) ///
 		name(fig_4_col_2, replace) 
 
+* Combine sections of the graph
 grc1leg2 fig_4_col_1 fig_4_col_2, row(1) ring(1) pos(6) graphregion(color(white)) legendfrom(fig_4_col_1) title("Sensitivty analyses", size(small) color(white)) name(fig_4, replace)
+
+* Save figure 3 as .tif in graphfiles
+graph export fig_4.tif, name(fig_4) replace
+
+* Stop logging
+log close

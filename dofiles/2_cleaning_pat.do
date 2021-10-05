@@ -1,21 +1,24 @@
 
-* Data cleaning of data extract (ALSPAC) from 08/02/2021 for mini project 2 - alcohol during pregnancy and HDP *
+* Preparing complete case MP2 dataset for negative control analysis *
 
 * Author: Flo Martin *
 
-* Date started: 08/02/2021 *
+* Date started: 15/03/2021 *
 * Date finished: 02/06/2021 *
 
 * Contents *
-* line 24 - Labels *
-* line 63 - Exposure variables *
-* line 326 - Outcome variables *
-* line 339 - Confounder variables *
-* line 532 - Sensitivity analysis variables (additional smoking variable line 634) *
-* line 631 - Saving clean dataset *
-* line 662 - Saving clean complete case dataset *
+* line 23 - Labels *
+* line 62 - Partner variables *
+* line 63 - Exposure *
+* line 102 - Confounder variables *
+* line 188 - Maternal variables *
+* line 694 - save NCA dataset *
 
-cd "/location/of/the/data"
+* Start logging
+log using "$Logdir/log_cleaning_pat.txt", text replace
+
+* Load in the data
+cd "$Projectdir/rawdata"
 use mp2.dta, clear
 
 * As we're investigating maternal exposures & outcomes, we don't need qlet = B otherwise mum's of multiple pregnancies will be counted twice
@@ -59,6 +62,134 @@ tab b924
 replace b924 =. if b924 ==-1
 tab c991
 replace c991 =. if c991 <0
+
+* Partner variables 
+* Exposure
+* Binge-drinking
+tab pb101, nolabel
+replace pb101 =. if pb101 ==-1
+
+gen pb101_bin =.
+replace pb101_bin = 0 if pb101 ==0
+replace pb101_bin = 1 if pb101 >0 & pb101 !=.
+label values pb101_bin bin_lb
+tab pb101_bin
+
+* Last three months
+tab pb100
+replace pb100 =. if pb100 ==-1
+gen pb100_cat =.
+replace pb100_cat = 0 if pb100 ==1 
+replace pb100_cat = 1 if pb100 ==2 | pb100 ==3
+replace pb100_cat = 2 if pb100 >=4 & pb100 !=.
+label values pb100_cat weekly_lb
+tab pb100_cat
+
+* Last two months pregnancy
+tab pc280
+replace pc280 =. if pc280 ==-1
+gen pc280_cat =.
+replace pc280_cat = 0 if pc280 ==1 
+replace pc280_cat = 1 if pc280 ==2 | pc280 ==3
+replace pc280_cat = 2 if pc280 >=4 & pc280 !=.
+label values pc280_cat weekly_lb
+tab pc280_cat
+
+* Derive same variable for drinking alcohol during pregnancy as was derived for mum
+gen pat_alcohol_preg =.
+replace pat_alcohol_preg = 0 if pb100_cat ==0 & pb101_bin ==0 & pc280_cat ==0
+replace pat_alcohol_preg = 1 if pb100_cat ==1 | pc280_cat ==1
+replace pat_alcohol_preg = 2 if pb100_cat ==2 | pc280_cat ==2
+label values pat_alcohol_preg cat_lb
+tab pat_alcohol_preg 
+
+* Confounding variables
+* Partner age at time of filling out B questionnaire
+tab patage
+replace patage =. if patage ==-1
+
+* Converting partner height (paw010) from cm to m
+tab paw010
+replace paw010 =. if paw010 <0
+replace paw010 = paw010/100
+* Partner weight (kg)
+tab paw002
+* Deriving paternal BMI from height (cm) and weight (kg)
+gen pat_bmi = (paw002/(paw010)^2)
+tab pat_bmi
+
+* Partner smoking during the pregnancy
+tab pb078, nolabel
+replace pb078 =. if pb078 ==-1
+generate smoking_father_ordinal_early =.
+replace smoking_father_ordinal_early =. if pb078 ==.
+replace smoking_father_ordinal_early = 0 if pb078 ==0 
+replace smoking_father_ordinal_early = 1 if pb078 ==1 
+replace smoking_father_ordinal_early = 1 if pb078 ==5 
+replace smoking_father_ordinal_early = 2 if pb078 ==10 
+replace smoking_father_ordinal_early = 2 if pb078 ==15 
+replace smoking_father_ordinal_early = 3 if pb078 ==20 
+replace smoking_father_ordinal_early = 3 if pb078 ==25 
+replace smoking_father_ordinal_early = 3 if pb078 ==30
+label values smoking_father_ordinal_early smoking_lb
+tab smoking_father_ordinal_early
+
+tab pb079
+replace pb079 =. if pb079 ==-1
+generate smoking_father_ordinal_present =.
+replace smoking_father_ordinal_present =. if pb079 ==.
+replace smoking_father_ordinal_present = 0 if pb079 ==0 
+replace smoking_father_ordinal_present = 1 if pb079 ==1 
+replace smoking_father_ordinal_present = 1 if pb079 ==5 
+replace smoking_father_ordinal_present = 2 if pb079 ==10 
+replace smoking_father_ordinal_present = 2 if pb079 ==15 
+replace smoking_father_ordinal_present = 3 if pb079 ==20 
+replace smoking_father_ordinal_present = 3 if pb079 ==25 
+replace smoking_father_ordinal_present = 3 if pb079 ==30
+label values smoking_father_ordinal_present smoking_lb
+tab smoking_father_ordinal_present
+
+* Partner smoking status any time during pregnancy - categorical
+gen pat_smoking =.
+replace pat_smoking = 0 if smoking_father_ordinal_early ==0 & smoking_father_ordinal_present ==0
+replace pat_smoking = 1 if smoking_father_ordinal_early ==1 | smoking_father_ordinal_present ==1
+replace pat_smoking = 2 if smoking_father_ordinal_early ==2 | smoking_father_ordinal_present ==2
+replace pat_smoking = 3 if smoking_father_ordinal_early ==3 | smoking_father_ordinal_present ==3
+label values pat_smoking smoking_lb
+tab pat_smoking
+
+* Partner smoking status any time during pregnancy - binary
+tab pat_smoking, nolabel
+gen pat_smoking_bin =.
+replace pat_smoking_bin = 0 if pat_smoking ==0
+replace pat_smoking_bin = 1 if pat_smoking >0 & pat_smoking !=.
+label values pat_smoking_bin bin_lb
+tab pat_smoking_bin
+
+* Partner marital status
+tab pa065
+replace pa065 =. if pa065 ==-1
+gen pat_married =.
+replace pat_married =0 if pa065 >=1 & pa065 <=4
+replace pat_married =1 if pa065 ==5 | pa065 ==6
+label values pat_married bin_lb
+tab pat_married
+
+* Partner ethnicity
+tab pat_ethn
+replace pat_ethn =. if pat_ethn ==-1
+* Binary partner ethnicity - White or non-white
+gen pat_ethn_bin =.
+replace pat_ethn_bin = 0 if pat_ethn ==1
+replace pat_ethn_bin = 1 if pat_ethn >1 & pat_ethn !=.
+label value pat_ethn_bin ethn_lb
+tab pat_ethn_bin
+
+* Highest partner educational attainment
+tab pat_edu
+replace pat_edu =. if pat_edu ==-1
+
+* Maternal variables cleaning script lifted from Cleaning CCA data.do
 
 * Cleaning variables related to exposure (alcohol consumption during pregnancy)
 * As per the meeting discussion on 24/02, answers from A and C questionnaires were deemed unreliable, thus we will build our exposed/unexposed cohort using B and E questionnaires
@@ -298,13 +429,18 @@ replace beer_cat = 2 if b754_cat ==2 & b757_cat ==0
 label values beer_cat cat_lb
 tab beer_cat
 
-* Collapsing beer categories
-tab beer_cat, nolabel
-gen beer_bin =.
-replace beer_bin = 0 if beer_cat ==0
-replace beer_bin = 1 if beer_cat ==1 | beer_cat ==2
-label values beer_bin bin_lb
-tab beer_bin
+* Binary variables for characteristic comparisons
+gen beer_cat_ltm =.
+replace beer_cat_ltm = 0 if beer_cat ==0
+replace beer_cat_ltm = 1 if beer_cat ==1
+label values beer_cat_ltm ltm_none_lb
+tab beer_cat_ltm
+
+gen beer_cat_heavy =.
+replace beer_cat_heavy = 0 if beer_cat ==0
+replace beer_cat_heavy = 1 if beer_cat ==2
+label values beer_cat_heavy heavy_none_lb
+tab beer_cat_heavy
 
 * Wine
 tab b757_cat
@@ -315,13 +451,18 @@ replace wine_cat = 2 if b757_cat ==2 & b754_cat ==0
 label values wine_cat cat_lb
 tab wine_cat
 
-* Collapsing wine categories
-tab wine_cat, nolabel
-gen wine_bin =.
-replace wine_bin = 0 if wine_cat ==0
-replace wine_bin = 1 if wine_cat ==1 | wine_cat ==2
-label values wine_bin bin_lb
-tab wine_bin
+* Binary variables for characteristic comparisons
+gen wine_cat_ltm =.
+replace wine_cat_ltm = 0 if wine_cat ==0
+replace wine_cat_ltm = 1 if wine_cat ==1
+label values wine_cat_ltm ltm_none_lb
+tab wine_cat_ltm
+
+gen wine_cat_heavy =.
+replace wine_cat_heavy = 0 if wine_cat ==0
+replace wine_cat_heavy = 1 if wine_cat ==2
+label values wine_cat_heavy heavy_none_lb
+tab wine_cat_heavy
 
 * Variables related to outcomes - obstretic variables below already clean
 tab HDP
@@ -529,126 +670,10 @@ replace mat_ethn_bin = 1 if mat_ethn >1 & mat_ethn !=.
 label values mat_ethn_bin ethn_lb
 tab mat_ethn_bin
 
-* Variables needed for sensitivity analysis 
-
-* Using pre-pregnancy categorical drinking as the exposure
-* b720 asks about pre-pregnancy drinking habits
-tab b720, nolabel
-replace b720 =. if b720 ==-1
-replace b720 = 5 if b720 ==6
-gen prepreg_cat =.
-replace prepreg_cat =. if b720 ==-1
-replace prepreg_cat = 0 if b720 ==1
-replace prepreg_cat = 1 if b720 ==2 | b720 ==3
-replace prepreg_cat = 2 if b720 >=4 & b720 !=.
-label values prepreg_cat cat_lb 
-tab prepreg_cat
-
-* Dealing with recall bias - restricting the analysis to those answering questionnaire B prior to 20 weeks
-tab alcohol_qb if b924 <20
-gen alcohol_pre20 = alcohol_qb if b924 <20
-label values alcohol_pre20 cat_lb
-tab alcohol_pre20
-
-* Separating binge drinking from non-binge drinking for supplementary material
-* Splitting out binge drinkers from 7+ drinks a week - heavy non-binge & heavy binge
-gen alcohol_preg_binge =.
-replace alcohol_preg_binge = 0 if alcohol_qb ==0 & alcohol_qe ==0
-replace alcohol_preg_binge = 1 if alcohol_qb ==1 | alcohol_qe ==1
-replace alcohol_preg_binge = 2 if alcohol_qb ==2 | alcohol_qe ==2
-replace alcohol_preg_binge = 3 if b723_bin ==1
-label values alcohol_preg_binge alcohol_preg_binge_lb
-tab alcohol_preg_binge
-
-* Generating two variables for comparing heavy non-binge vs none and heavy binge vs none
-gen heavy_nonbinge_none =.
-replace heavy_nonbinge_none = 0 if alcohol_preg ==0
-replace heavy_nonbinge_none = 1 if alcohol_preg_binge == 2
-label values heavy_nonbinge_none heavy_nonbinge_none_lb
-tab heavy_nonbinge_none
-
-gen heavy_binge_none =.
-replace heavy_binge_none = 0 if alcohol_preg ==0
-replace heavy_binge_none = 1 if alcohol_preg_binge ==3
-label values heavy_binge_none heavy_binge_none_lb
-tab heavy_binge_none
-
-* Extra variables for beer wine analysis supplementary material
-
-* Binary variables for characteristic comparisons in beer drinkers
-gen beer_cat_ltm =.
-replace beer_cat_ltm = 0 if beer_cat ==0
-replace beer_cat_ltm = 1 if beer_cat ==1
-label values beer_cat_ltm ltm_none_lb
-tab beer_cat_ltm
-
-gen beer_cat_heavy =.
-replace beer_cat_heavy = 0 if beer_cat ==0
-replace beer_cat_heavy = 1 if beer_cat ==2
-label values beer_cat_heavy heavy_none_lb
-tab beer_cat_heavy
-
-* Binary variables for characteristic comparisons in wine drinkers
-gen wine_cat_ltm =.
-replace wine_cat_ltm = 0 if wine_cat ==0
-replace wine_cat_ltm = 1 if wine_cat ==1
-label values wine_cat_ltm ltm_none_lb
-tab wine_cat_ltm
-
-gen wine_cat_heavy =.
-replace wine_cat_heavy = 0 if wine_cat ==0
-replace wine_cat_heavy = 1 if wine_cat ==2
-label values wine_cat_heavy heavy_none_lb
-tab wine_cat_heavy
-
-* Generating variable for beer not wine vs non-drinker
-gen pure_beer =.
-replace pure_beer = 1 if beer_bin ==1 & wine_bin ==0
-replace pure_beer = 0 if alcohol_preg ==0
-label values pure_beer bin_lb
-tab pure_beer
-
-* Generating variable for wine not beer vs non-drinker
-gen pure_wine =.
-replace pure_wine = 1 if wine_bin ==1 & beer_bin ==0
-replace pure_wine = 0 if alcohol_preg ==0
-label values pure_wine bin_lb
-tab pure_wine
-
-* Generating variable to compare binge/extra drinking in each group
-gen beer_wine =.
-replace beer_wine = 1 if pure_wine ==1
-replace beer_wine = 0 if pure_beer ==1
-label values beer_wine beer_wine_lb
-tab beer_wine
-
-* Complete cases
-gen cc =.
-replace cc = 0 if alcohol_preg ==. | mat_bmi ==. | matage_del ==. | mat_edu ==. | marital_status ==. | prepreg_smoking ==. | smoking_preg ==. | parity ==. | mat_ethn ==. | HDP ==.
-replace cc = 1 if alcohol_preg !=. & mat_bmi !=. & matage_del !=. & mat_edu !=. & marital_status !=. & prepreg_smoking !=. & smoking_preg !=. & parity !=. & mat_ethn !=. & HDP !=.
-tab cc
-
-* Save full clean dataset for analysis of missing data
-save mp2_clean.dta, replace
-
-* Categorical variable of average cigarettes smoked per day in pregnancy using the max amount they reported anytime during pregnancy - to adequately build the variable, I need to rely on missing values so here I drop if the binary variable for smoking during pregnancy is missing (therefore not a complete cases and being dropped from the analysis anyway) to build stratified smoking covariate
-drop if smoking_preg ==.
-
-gen no_smoked_preg =.
-replace no_smoked_preg = 0 if (b670 ==0 | b670 ==.) & (b671 ==0 | b671 ==.) & (c482_cat ==0 | c482_cat ==.) & (e178 ==0 | e178 ==.)
-replace no_smoked_preg = 1 if b670 ==1 | b671 ==1 | c482_cat ==1 | e178 ==1
-replace no_smoked_preg = 5 if b670 ==5 | b671 ==5 | c482_cat ==5 | e178 ==5
-replace no_smoked_preg = 10 if b670 ==10 | b671 ==10 | c482_cat ==10 | e178 ==10
-replace no_smoked_preg = 15 if b670 ==15 | b671 ==15 | c482_cat ==15 | e178 ==15
-replace no_smoked_preg = 20 if b670 ==20 | b671 ==20 | c482_cat ==20 | e178 ==20
-replace no_smoked_preg = 25 if b670 ==25 | b671 ==25 | c482_cat ==25 | e178 ==25
-replace no_smoked_preg = 30 if b670 ==30 | b671 ==30 | c482_cat ==30 | e178 ==30
-tab no_smoked_preg
-
 * We want to drop those who have pre-existing hypertension as we are measuring incidence not prevalence
 drop if prev_hyp ==1
 
-* Now for the complete case analysis (CCA) drop any members in the population who have missing data (we have already dropped those who had smoking during pregnancy missing)
+* Drop incomplete maternal variables as done for the CCA cohort
 drop if alcohol_preg ==.
 drop if mat_bmi ==. 
 drop if matage_del ==.   
@@ -656,8 +681,22 @@ drop if mat_edu ==.
 drop if marital_status ==.
 drop if prepreg_smoking ==.
 drop if parity ==. 
-drop if mat_ethn ==.  
+drop if mat_ethn ==. 
+drop if smoking_preg ==.
 drop if HDP ==.
 
-save mp2_cca.dta, replace
+* Now, drop incomplete partner variables for the negative control analysis (NCA) cohort (so complete cases for both mother & partner)
+drop if pat_alcohol_preg ==.
+drop if pat_bmi ==. 
+drop if patage ==.  
+drop if pat_edu ==. 
+drop if pat_married ==.
+drop if pat_ethn_bin ==. 
+drop if pat_smoking ==.
+
+* Save clean dataset including those with complete exposure, maternal exposure & covariate data n=5,376
+save "$Datadir/mp2_nca.dta", replace
+
+* Stop logging
+log close
 

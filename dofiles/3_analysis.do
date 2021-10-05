@@ -29,8 +29,13 @@
 * line 389 - Excluding those who responded to questionnaire B post-20 weeks' gestation
 * line 431 - Excluding those who reported to abstain from alcohol prior to pregnancy
 
-cd "/location/of/the/data"
-use mp2_cca.dta, replace
+
+* Start logging
+log using "$Logdir/log_analysis.txt", text replace
+
+* Load in the data
+cd "$Projectdir/datafiles"
+use mp2_cca.dta, clear
 
 * Table 1 - characterisitics of low-to-moderate and heavy drinkers as compared with non-drinkers during pregnancy
 
@@ -469,3 +474,6 @@ lrtest A B
 * Multinomial logistic regression analysis - alcohol consumption during pregnancy (excluding pre-pregnancy abstainers) ~ hdp_cat, unadjusted & adjusted
 mlogit hdp_cat alcohol_preg if prepreg_cat !=0, base(0) rrr
 mlogit hdp_cat alcohol_preg mat_bmi matage_del smoking_preg prepreg_smoking i.mat_edu married_bin i.parity_cat mat_ethn_bin if prepreg_cat !=0, base(0) rrr
+
+* Stop logging
+log close
