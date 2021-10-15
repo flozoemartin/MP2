@@ -38,7 +38,7 @@ tab1 alcohol_preg mat_age_cat bmi_cat prepreg_smoking smoking_preg parity_bin ma
 use mp2_clean.dta, replace
 
 foreach varname of varlist alcohol_preg mat_age_cat bmi_cat prepreg_smoking smoking_preg parity_bin mat_ethn_bin mat_degree married_bin HDP {
-	logistic cc `varname', or
+	logistic cc i.`varname', or
 }
 
 * Beer wine analysis
