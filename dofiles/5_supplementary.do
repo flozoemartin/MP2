@@ -134,16 +134,16 @@ tab hdp_cat
 tab HDP alcohol_preg_binge, col
 
 * Checking using a likelihood ratio test whether we need an indicator for alcohol_preg
-logistic HDP alcohol_preg_binge mat_bmi matage_del smoking_preg prepreg_smoking i.mat_edu married_bin i.parity_cat mat_ethn_bin, or
+logistic HDP alcohol_preg_binge mat_bmi matage_del smoking_preg prepreg_smoking i.mat_edu married_bin i.parity_cat mat_ethn_bin if alcohol_preg_binge!=2, or
 est store A
-logistic HDP i.alcohol_preg_binge mat_bmi matage_del smoking_preg prepreg_smoking i.mat_edu married_bin i.parity_cat mat_ethn_bin, or
+logistic HDP i.alcohol_preg_binge mat_bmi matage_del smoking_preg prepreg_smoking i.mat_edu married_bin i.parity_cat mat_ethn_bin if alcohol_preg_binge!=2, or
 est store B
 lrtest A B
 * The output of the likelihood ratio test if 0.3188 so we don't need both coefficients
 
 * Logistic regression analysis - alcohol consumption during pregnancy ~ HDP, unadjusted & adjusted
-logistic HDP alcohol_preg_binge, or 
-logistic HDP alcohol_preg_binge mat_bmi matage_del smoking_preg prepreg_smoking i.mat_edu married_bin i.parity_cat mat_ethn_bin, or
+logistic HDP alcohol_preg_binge if alcohol_preg_binge!=2, or 
+logistic HDP alcohol_preg_binge mat_bmi matage_del smoking_preg prepreg_smoking i.mat_edu married_bin i.parity_cat mat_ethn_bin if alcohol_preg_binge!=2, or
 
 * Proportions of those with gestational hypertension or preeclampsia in each drinking group
 tab hdp_cat alcohol_preg_binge, col
