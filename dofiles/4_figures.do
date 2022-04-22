@@ -47,10 +47,10 @@ net install grc1leg, from (http://www.stata.com/users/vwiggins)
    pci 9.95 0.25 9.95 9.95 `bc' || pci 9.95 9.95 3.8 9.95 `bc' || pci 3.8 9.95 3.8 0.25 `bc' || pci 3.8 0.25 9.95 0.25 `bc' ///
 	|| pcarrowi 9.5 2.35 8.35 2.35 `bca'  ///
 	|| pcarrowi 8.7 2.35 8.7 4.98 `bca'  ///
-	|| pcarrowi 8.2 2.35 6.85 2.35 `bca'  ///
+	|| pcarrowi 8.2 2.35 6.79 2.35 `bca'  ///
 	|| pcarrowi 7.3 2.35 7.3 4.98 `bca'  ///
 	|| pcarrowi 5.5 2.35 5.5 4.98 `bca' /// 
-	|| pcarrowi 6.5 2.35 4.9 2.35 `bca'  ///
+	|| pcarrowi 6.5 2.35 4.84 2.35 `bca'  ///
 	, /// Don't forget this comma if the above is removed
 	text(9.35 0.5 "Participants enrolled in" "ALSPAC" "{it:n} = 15,454" `omed') ///
 	text(8.7 5 "{bf:Excluded:}" ///
@@ -66,12 +66,12 @@ net install grc1leg, from (http://www.stata.com/users/vwiggins)
 	"Incomplete exposure &" "covariate data" ///
 	"{it:n} = 4,237" ///
 	`osmall') ///
-	text(6.5 0.5 "Participants with complete" "data" "{it:n} = 8,999" `omed' ) ///
+	text(6.5 0.5 "Complete case cohort" "{it:n} = 8,999" `omed' ) ///
 	text(5.5 5 "{bf:Excluded:}" ///
 	"Partner's with incomplete" "exposure & covariate data" ///
 	"{it:n} = 3,623" ///
 	`osmall') ///
-	text(4.55 0.5 "Participants with complete" "partner data" "{it:n} = 5,376" `omed' ) ///
+	text(4.55 0.5 "Negative control cohort" "{it:n} = 5,376" `omed' ) ///
 	legend(off) ///
 	xlabel("") ylabel("") xtitle("") ytitle("") ///
 	graphregion(lcolor(white) fcolor(white) margin(zero)) yscale(range(4.5 10) noline) xscale(range(0 10) noline) ///
@@ -110,7 +110,7 @@ twoway  (rcap lci uci id, horizontal) ///
 		(scatter id or if gr ==0, mcolor(gs11) mlcolor(black) mlwidth(.1) ms(t)) ///
 		(scatter id or if gr ==1, mcolor(gs7) mlcolor(black) mlwidth(.1) ms(o)) /// 
 		(scatter id or if gr ==2, mcolor(black) mlcolor(black) ms(d)) /// 
-		, legend(order(2 "Full maternal cohort adjusted{superscript:1}" "{it:n} = 8,999" 3 "Negative control analysis cohort adjusted{superscript:1}" "{it:n} = 5,376" 4 "Negative control analysis cohort mutually adjusted{superscript:2}" "{it:n} = 5,376") pos(5) ring(1) row(1) size(*0.5)) /// 
+		, legend(order(2 "Complete case cohort adjusted*" "{it:n} = 8,999" 3 "Negative control cohort adjusted*" "{it:n} = 5,376" 4 "Negative control cohort mutually adjusted{superscript:†}" "{it:n} = 5,376") pos(5) ring(1) row(1) size(*0.5)) /// 
 		ylabel(1.15 `""Hypertensive disorder" "of pregnancy (HDP)""' 2.15 "Gestational hypertension" 3.15 "Preeclampsia" 4.15  `""Hypertensive disorder" "of pregnancy (HDP)""' 5.15 "Gestational hypertension" 6.15 "Preeclampsia", nogrid angle(horizontal) labsize(*0.8)) ytitle("") ///
 		xlabel(0.3(0.2)1.5,format(%03.1f) labsize(*0.6) nogrid) /// 
 		title("{bf}Maternal exposure", size(small)) ///
@@ -183,7 +183,7 @@ set scheme s1mono
 twoway  (rcap lci uci id, horizontal) /// 
 		(scatter id or if gr ==0, mcolor(gs11) mlcolor(black) mlwidth(.1) ms(t)) /// 
 		(scatter id or if gr ==1, mcolor(black) ms(s)) /// 
-		, legend(order(2 "Full maternal cohort adjusted{superscript:1}" "{it:n} = 8,999"  3 "Stratified by beer adjusted{superscript:1}" "{it:n} = 3,065") pos(5) ring(2) row(1) size(*0.5)) /// 
+		, legend(order(2 "Complete case cohort adjusted*" "{it:n} = 8,999"  3 "Stratified by beer adjusted*" "{it:n} = 3,065") pos(5) ring(2) row(1) size(*0.5)) /// 
 		ylabel(1.1 `""Hypertensive disorder" "of pregnancy (HDP)""' 1.4 "Gestational hypertension" 1.7 "Preeclampsia", nogrid angle(horizontal) labsize(*0.8)) ytitle("") ///
 		xlabel(0.5(0.2)1.3,format(%03.1f) labsize(*0.6) nogrid) /// 
 		b1title("{bf:Ratio measure (95%CI)}", size(small) margin (0 2)) /// 
@@ -210,7 +210,7 @@ set scheme s1mono
 twoway  (rcap lci uci id, horizontal) /// 
 		(scatter id or if gr ==0, mcolor(gs11) mlcolor(black) mlwidth(.1) ms(t)) /// 
 		(scatter id or if gr ==1, mcolor(black) ms(o)) /// 
-		, legend(order(2 "Full maternal cohort adjusted{superscript:1}" "{it:n} = 8,999"  3 "Stratified by wine adjusted{superscript:1}" "{it:n} = 3,798") pos(5) ring(2) row(1) size(*0.5)) /// 
+		, legend(order(2 "Complete case cohort adjusted*" "{it:n} = 8,999"  3 "Stratified by wine adjusted*" "{it:n} = 3,798") pos(5) ring(2) row(1) size(*0.5)) /// 
 		ylabel("", nogrid) ytitle("") ///
 		xlabel(0.5(0.2)1.3,format(%03.1f) labsize(*0.6) nogrid) /// 
 		b1title("{bf:Ratio measure (95%CI)}", size(small) margin (0 2)) /// 
@@ -228,28 +228,22 @@ graph combine beer wine, row(1) graphregion(color(white)) name(fig_3, replace)
 * Save figure 3 as .tif in graphfiles
 graph export fig_3.tif, name(fig_3) replace
 
-* Figure 4 - three sensitivity analyses: restricted to prior to 20 weeks' gestation, categorical smoking, excluding abstainers prior to pregnancy
-
+* Figure 4 - four sensitivity analyses
+* Excluding those with a risk factor for HDP & excluding those who responded after 20 weeks' gestation
 clear
 input id gr or lci uci
 1.05 0 0.845 0.775 0.920
-1.15 1 0.842 0.769 0.923
+1.15 1 0.830 0.757 0.910
 1.35 0 0.860 0.786 0.942
-1.45 1 0.855 0.777 0.940
+1.45 1 0.840 0.763 0.925
 1.65 0 0.736 0.589 0.919
-1.75 1 0.755 0.597 0.954
+1.75 1 0.750 0.587 0.958
 2.05 0 0.845 0.775 0.920
-2.15 1 0.842 0.775 0.921
+2.15 1 0.842 0.769 0.923
 2.35 0 0.860 0.786 0.942
-2.45 1 0.860 0.786 0.942
+2.45 1 0.855 0.777 0.940
 2.65 0 0.736 0.589 0.919
-2.75 1 0.738 0.590 0.922
-3.05 0 0.845 0.775 0.920
-3.15 1 0.833 0.752 0.924
-3.35 0 0.860 0.786 0.942
-3.45 1 0.849 0.763 0.946
-3.65 0 0.736 0.589 0.919
-3.75 1 0.715 0.539 0.949
+2.75 1 0.755 0.597 0.954
 end	
 		
 set scheme s1mono	
@@ -257,22 +251,62 @@ set scheme s1mono
 twoway  (rcap lci uci id, horizontal) /// 
 		(scatter id or if gr ==0, mcolor(gs11) mlcolor(black) mlwidth(.1) ms(t)) /// 
 		(scatter id or if gr ==1, mcolor(black) ms(t)) /// 
-		, legend(order(2 "Full maternal cohort adjusted{superscript:1}" "{it:n} = 8,999" 3 "Sensitivity analysis{superscript:2}" "{it:n} shown in panel") pos(6) ring(2) row(1) size(*0.5)) /// 
-		ylabel(1.1 `""Hypertensive disorder" "of pregnancy (HDP)""' 1.4 "Gestational hypertension" 1.7 "Preeclampsia" 2.1 `""Hypertensive disorder" "of pregnancy (HDP)""' 2.4 "Gestational hypertension" 2.7 "Preeclampsia" 3.1 `""Hypertensive disorder" "of pregnancy (HDP)""' 3.4 "Gestational hypertension" 3.7 "Preeclampsia", nogrid angle(horizontal) labsize(*0.6)) ytitle("") ///
+		, legend(order(2 "Complete case cohort adjusted*" "{it:n} = 8,999" 3 "Sensitivity analysis{superscript:†}") pos(5) ring(2) row(1) size(*0.5)) /// 
+		ylabel(1.1 `""Hypertensive disorder" "of pregnancy (HDP)""' 1.4 "Gestational hypertension" 1.7 "Preeclampsia" 2.1 `""Hypertensive disorder" "of pregnancy (HDP)""' 2.4 "Gestational hypertension" 2.7 "Preeclampsia", nogrid angle(horizontal) labsize(*0.8)) ytitle("") ///
 		xlabel(0.5(0.2)1.5,format(%03.1f) labsize(*0.6) nogrid) /// 
-		title("{bf} Sensitivity analyses", size(*0.6)) ///
-		b1title("{bf:Ratio measure (95%CI)}", size(*0.6) margin (0 2)) /// 
-		yscale(reverse r(0.93 3.8) lstyle(none)) ///
+		b1title("{bf:Ratio measure (95%CI)}", size(small) margin (0 2)) /// 
+		yscale(reverse r(0.93 2.8) lstyle(none)) ///
 		xscale(log range(0.5 1.55)) ///
 		graphregion(color(white) margin(-2 0 0 0)) ///
 		xline(1.0, lpattern(dash) lcolor(red))  ///
 		yline(1.9, lpattern(solid) lcolor(black))  ///
-		yline(2.9, lpattern(solid) lcolor(black))  ///
-		text(0.93 1.38 "(i) {it:n} = 6,001", size(*0.6)) ///
-		text(1.98 1.38 "(ii) {it:n} = 8,999", size(*0.6)) ///
-		text(2.98 1.38 "(iii) {it:n} = 8,450", size(*0.6)) ///
-		fxsize(100) fysize(100) ///
-		name(fig_4, replace) 
+		text(0.93 1.38 "{it:n} = 8,152", size(small)) ///
+		text(1.95 1.38 "{it:n} = 6,001", size(small)) ///
+		text(0.93 0.52 "{bf}(i)", size(small)) ///
+		text(1.95 0.52 "{bf}(iii)", size(small)) ///
+		fxsize(85) fysize(100) ///
+		name(fig_4_col_1, replace) 
+
+
+* Stratifying smoking covariate into categorical number per day & excluding abstainer's prior to pregnancy
+clear
+input id gr or lci uci
+1.05 0 0.845 0.775 0.920
+1.15 1 0.842 0.775 0.921
+1.35 0 0.860 0.786 0.942
+1.45 1 0.860 0.786 0.942
+1.65 0 0.736 0.589 0.919
+1.75 1 0.738 0.590 0.922
+2.05 0 0.845 0.775 0.920
+2.15 1 0.833 0.752 0.924
+2.35 0 0.860 0.786 0.942
+2.45 1 0.849 0.763 0.946
+2.65 0 0.736 0.589 0.919
+2.75 1 0.715 0.539 0.949
+end	
+		
+set scheme s1mono	
+		
+twoway  (rcap lci uci id, horizontal) /// 
+		(scatter id or if gr ==0, mcolor(gs11) mlcolor(black) mlwidth(.1) ms(t)) /// 
+		(scatter id or if gr ==1, mcolor(black) ms(t)) /// 
+		, legend(order(2 "Complete case cohort adjusted" "{it:n} = 8,999" 3 "Sensitivity analysis") pos(5) ring(2) row(1) size(*0.5)) /// 
+		ylabel("", nogrid angle(horizontal) labsize(*0.8)) ytitle("") ///
+		xlabel(0.5(0.2)1.5,format(%03.1f) labsize(*0.6) nogrid) /// 
+		b1title("{bf:Ratio measure (95%CI)}", size(small) margin (0 2)) /// 
+		yscale(reverse r(0.93 2.8) lstyle(none)) ///
+		xscale(log range(0.5 1.55)) ///
+		graphregion(color(white) margin(-2 0 0 0)) ///
+		xline(1.0, lpattern(dash) lcolor(red))  ///
+		yline(1.9, lpattern(solid) lcolor(black))  ///
+		text(0.93 1.38 "{it:n} = 8,999", size(small)) ///
+		text(1.95 1.38 "{it:n} = 8,450", size(small)) ///
+		text(0.93 0.52 "{bf}(ii)", size(small)) ///
+		text(1.95 0.52 "{bf}(iv)", size(small)) ///
+		fxsize(55) fysize(100) ///
+		name(fig_4_col_2, replace) 
+
+grc1leg2 fig_4_col_1 fig_4_col_2, row(1) ring(1) pos(6) graphregion(color(white)) legendfrom(fig_4_col_1) title("Sensitivty analyses", size(small) color(white)) name(fig_4, replace)	
 
 * Save figure 4 as .tif in graphfiles
 graph export fig_4.tif, name(fig_4) replace

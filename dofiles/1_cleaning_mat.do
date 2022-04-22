@@ -20,7 +20,7 @@ log using "$Logdir/log_cleaning_mat.txt", text replace
 
 * Load in the data
 cd "$Projectdir/rawdata"
-use mp2.dta, clear
+use mp2_14feb.dta, clear
 
 * As we're investigating maternal exposures & outcomes, we don't need qlet = B otherwise mum's of multiple pregnancies will be counted twice
 drop if qlet == "B"
@@ -576,6 +576,24 @@ replace heavy_binge_none = 0 if alcohol_preg ==0
 replace heavy_binge_none = 1 if alcohol_preg_binge ==3
 label values heavy_binge_none heavy_binge_none_lb
 tab heavy_binge_none
+
+* Diabetes during pregnancy
+tab v1dab6k_diabetes, nolabel
+replace v1dab6k_diabetes = 0 if v1dab6k_diabetes==2
+label value v1dab6k_diabetes bin_lb
+tab v1dab6k_diabetes
+
+* Kidney disease
+tab d159a, nolabel
+replace d159a = 0 if d159a==2
+label value d159a bin_lb
+tab d159a
+
+* Arthritis
+tab d163a, nolabel
+replace d163a = 0 if d163a==2
+label values d163a bin_lb
+tab d163a
 
 * Extra variables for beer wine analysis supplementary material
 

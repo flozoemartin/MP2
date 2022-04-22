@@ -27,19 +27,57 @@ log using "$Logdir/log_supplementary.txt", text replace
 cd "$Projectdir/datafiles"
 
 * Missing data exploration (as per framework set out by Lee et al. (2021))
-* Table 1 Summary of variables in the full cohort & restricted (complete case) cohort for exposure, outcome & covariates
+* Tables 1 & 2 Summary of variables in the full cohort & restricted (complete case) cohort for exposure, outcome & covariates
 use mp2_clean.dta, replace
 tab1 alcohol_preg mat_age_cat bmi_cat prepreg_smoking smoking_preg parity_bin mat_ethn_bin mat_degree married_bin hdp_cat 
 
 use mp2_cca.dta, replace
 tab1 alcohol_preg mat_age_cat bmi_cat prepreg_smoking smoking_preg parity_bin mat_ethn_bin mat_degree married_bin hdp_cat
 
-* Table 2 Predictors of being a complete case in available data for each variable in the analysis
+use mp2_clean.dta, replace
+tab1 alcohol_preg mat_age_cat bmi_cat prepreg_smoking smoking_preg parity_bin mat_ethn_bin mat_degree married_bin hdp_cat if cc!=1
+
+use mp2_clean_pat.dta, replace
+tab1 pat_alcohol_preg pat_age_cat bmi_cat_pat pat_smoking_bin parity_bin pat_ethn_bin pat_degree married_bin hdp_cat
+
+use mp2_nca.dta, replace
+tab1 pat_alcohol_preg pat_age_cat bmi_cat_pat pat_smoking_bin parity_bin pat_ethn_bin pat_degree married_bin hdp_cat
+
+use mp2_clean_pat.dta, replace
+tab1 pat_alcohol_preg pat_age_cat bmi_cat_pat pat_smoking_bin parity_bin pat_ethn_bin pat_degree married_bin hdp_cat if cc_pat!=1
+
+* Tables 3 & 4 Predictors of being a complete case in available data for each variable in the analysis
 use mp2_clean.dta, replace
 
 foreach varname of varlist alcohol_preg mat_age_cat bmi_cat prepreg_smoking smoking_preg parity_bin mat_ethn_bin mat_degree married_bin HDP {
 	logistic cc i.`varname', or
 }
+
+use mp2_clean_pat.dta, replace
+foreach varname of varlist pat_alcohol_preg pat_age_cat bmi_cat_pat pat_smoking_bin parity_bin pat_ethn_bin pat_degree married_bin HDP {
+	logistic cc_pat i.`varname', or
+}
+
+* Table 5 - comparing characteristics between normotensive & HDP
+use mp2_cca.dta, replace
+
+	tab HDP
+
+	ttest matage_del, by(HDP) 
+
+	ttest mat_bmi, by(HDP)
+
+	tab HDP prepreg_smoking, row
+	
+	tab HDP smoking_preg, row
+
+	tab HDP parity_bin, row
+
+	tab HDP mat_ethn_bin, row
+
+	tab HDP mat_degree, row
+
+	tab HDP married_bin, row
 
 * Beer wine analysis
 use mp2_cca.dta, replace

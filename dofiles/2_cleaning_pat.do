@@ -19,7 +19,7 @@ log using "$Logdir/log_cleaning_pat.txt", text replace
 
 * Load in the data
 cd "$Projectdir/rawdata"
-use mp2.dta, clear
+use mp2_14feb.dta, clear
 
 * As we're investigating maternal exposures & outcomes, we don't need qlet = B otherwise mum's of multiple pregnancies will be counted twice
 drop if qlet == "B"
@@ -103,10 +103,30 @@ replace pat_alcohol_preg = 2 if pb100_cat ==2 | pc280_cat ==2
 label values pat_alcohol_preg cat_lb
 tab pat_alcohol_preg 
 
+* Binary variables comparing low-to-moderate with none and heavy with none for characteristic comparisons
+gen pat_ltm_none =.
+replace pat_ltm_none = 0 if pat_alcohol_preg == 0
+replace pat_ltm_none = 1 if pat_alcohol_preg == 1
+label values pat_ltm_none ltm_none_lb
+tab pat_ltm_none
+
+gen pat_heavy_none =.
+replace pat_heavy_none = 0 if pat_alcohol_preg ==0
+replace pat_heavy_none = 1 if pat_alcohol_preg ==2
+label values pat_heavy_none heavy_none_lb
+tab pat_heavy_none
+
 * Confounding variables
 * Partner age at time of filling out B questionnaire
 tab patage
 replace patage =. if patage ==-1
+
+* Age category for missing data analysis
+gen pat_age_cat =.
+replace pat_age_cat = 0 if patage <25
+replace pat_age_cat = 1 if patage >=25 & patage !=.
+label values pat_age_cat mat_age_cat_lb
+tab pat_age_cat
 
 * Converting partner height (paw010) from cm to m
 tab paw010
@@ -117,6 +137,15 @@ tab paw002
 * Deriving paternal BMI from height (cm) and weight (kg)
 gen pat_bmi = (paw002/(paw010)^2)
 tab pat_bmi
+
+* BMI categories for missing data analysis
+gen bmi_cat_pat =.
+replace bmi_cat_pat = 0 if mat_bmi <18.5
+replace bmi_cat_pat = 1 if mat_bmi >=18.5 & mat_bmi <25
+replace bmi_cat_pat = 2 if mat_bmi >=25 & mat_bmi <30
+replace bmi_cat_pat = 3 if mat_bmi >=30 & mat_bmi !=.
+label values bmi_cat_pat bmi_cat_lb
+tab bmi_cat_pat 
 
 * Partner smoking during the pregnancy
 tab pb078, nolabel
@@ -186,8 +215,14 @@ label value pat_ethn_bin ethn_lb
 tab pat_ethn_bin
 
 * Highest partner educational attainment
-tab pat_edu
+tab pat_edu, nolabel
 replace pat_edu =. if pat_edu ==-1
+
+gen pat_degree =.
+replace pat_degree = 1 if pat_edu==5
+replace pat_degree = 0 if pat_edu<5 & pat_edu!=.
+label value pat_degree bin_lb
+tab pat_degree
 
 * Maternal variables cleaning script lifted from Cleaning CCA data.do
 
@@ -669,6 +704,20 @@ replace mat_ethn_bin = 0 if mat_ethn ==1
 replace mat_ethn_bin = 1 if mat_ethn >1 & mat_ethn !=.
 label values mat_ethn_bin ethn_lb
 tab mat_ethn_bin
+
+* Complete cases
+gen cc =.
+replace cc = 0 if alcohol_preg ==. | mat_bmi ==. | matage_del ==. | mat_edu ==. | marital_status ==. | prepreg_smoking ==. | smoking_preg ==. | parity ==. | mat_ethn ==. | HDP ==.
+replace cc = 1 if alcohol_preg !=. & mat_bmi !=. & matage_del !=. & mat_edu !=. & marital_status !=. & prepreg_smoking !=. & smoking_preg !=. & parity !=. & mat_ethn !=. & HDP !=.
+tab cc
+
+gen cc_pat =.
+replace cc_pat = 0 if alcohol_preg ==. | pat_bmi ==. | patage ==. | pat_edu ==. | marital_status ==. | pat_smoking_bin ==. | parity ==. | pat_ethn ==. | HDP ==.
+replace cc_pat = 1 if alcohol_preg !=. & pat_bmi !=. & patage !=. & pat_edu !=. & marital_status !=. & pat_smoking_bin !=. & parity !=. & pat_ethn !=. & HDP !=.
+tab cc_pat
+
+* Save full clean dataset for analysis of missing data n=15,442
+save "$Datadir/mp2_clean_pat.dta", replace
 
 * We want to drop those who have pre-existing hypertension as we are measuring incidence not prevalence
 drop if prev_hyp ==1

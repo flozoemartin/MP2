@@ -38,25 +38,51 @@ use mp2_cca.dta, clear
 
 * Table 1 - characterisitics of low-to-moderate and heavy drinkers as compared with non-drinkers during pregnancy
 
-tab ltm_none
-ttest matage_del, by(ltm_none)
-ttest mat_bmi, by(ltm_none) 
-tab prepreg_smoking ltm_none, col chi
-tab smoking_preg ltm_none, col chi
-tab parity_bin ltm_none, col chi
-tab mat_ethn_bin ltm_none, col chi
-tab mat_degree ltm_none, col chi
-tab married_bin ltm_none, col chi
+	tab alcohol_preg
 
-tab heavy_none
-ttest matage_del, by(heavy_none)
-ttest mat_bmi, by(heavy_none) 
-tab prepreg_smoking heavy_none, col chi
-tab smoking_preg heavy_none, col chi
-tab parity_bin heavy_none, col chi
-tab mat_ethn_bin heavy_none, col chi
-tab mat_degree heavy_none, col chi
-tab married_bin heavy_none, col chi
+	foreach n in 0 1 2 {
+		summ matage_del if alcohol_preg==`n'
+	}
+	
+	foreach n in 0 1 2 {
+		summ mat_bmi if alcohol_preg==`n'
+	}
+	 
+	tab alcohol_preg prepreg_smoking, row
+	
+	tab alcohol_preg smoking_preg, row
+
+	tab alcohol_preg parity_bin, row
+
+	tab alcohol_preg mat_ethn_bin, row
+
+	tab alcohol_preg mat_degree, row
+
+	tab alcohol_preg married_bin, row
+	
+	* Partner characteristics
+
+	use mp2_nca.dta, clear
+
+	tab pat_alcohol_preg
+
+	foreach n in 0 1 2 {
+		summ patage if pat_alcohol_preg==`n'
+	}
+	
+	foreach n in 0 1 2 {
+		summ pat_bmi if pat_alcohol_preg==`n'
+	}
+	
+	tab pat_alcohol_preg pat_smoking_bin, row
+
+	tab pat_alcohol_preg parity_bin, row
+
+	tab pat_alcohol_preg pat_ethn_bin, row
+
+	tab pat_alcohol_preg pat_degree, row
+
+	tab pat_alcohol_preg pat_married, row
 
 * Primary analysis - any alcohol use during pregnancy using alcohol_preg and HDP/hdp_cat 
 
@@ -473,6 +499,49 @@ lrtest A B
 * Multinomial logistic regression analysis - alcohol consumption during pregnancy (excluding pre-pregnancy abstainers) ~ hdp_cat, unadjusted & adjusted
 mlogit hdp_cat alcohol_preg if prepreg_cat !=0, base(0) rrr
 mlogit hdp_cat alcohol_preg mat_bmi matage_del smoking_preg prepreg_smoking i.mat_edu married_bin i.parity_cat mat_ethn_bin if prepreg_cat !=0, base(0) rrr
+
+* Excluding those who reported to have diabetes, kidney disease, arthritis or non-singleton pregnancies
+
+* Population
+* ALSPAC mothers
+
+* Exposure 
+tab alcohol_preg if v1dab6k_diabetes!=1 & d159a!=1 & d163a!=1 & mz010a!=2
+
+* Outcomes
+tab HDP
+tab hdp_cat
+
+* Proportions of those with HDP in each drinking group
+tab HDP alcohol_preg if v1dab6k_diabetes!=1 & d159a!=1 & d163a!=1 & mz010a!=2, col
+
+* Checking using a likelihood ratio test whether we need an indicator for alcohol_preg
+logistic HDP alcohol_preg mat_bmi matage_del smoking_preg prepreg_smoking i.mat_edu married_bin i.parity_cat mat_ethn_bin if v1dab6k_diabetes!=1 & d159a!=1 & d163a!=1 & mz010a!=2, or
+est store A
+logistic HDP i.alcohol_preg mat_bmi matage_del smoking_preg prepreg_smoking i.mat_edu married_bin i.parity_cat mat_ethn_bin if v1dab6k_diabetes!=1 & d159a!=1 & d163a!=1 & mz010a!=2, or
+est store B
+lrtest A B
+* The output of the likelihood ratio test if 0.2935 so we don't need both coefficients
+
+* Logistic regression analysis - alcohol consumption during pregnancy (excluding diabetes, kidney disease, arthritis and non-singleton pregnancies) ~ HDP, unadjusted & adjusted
+logistic HDP alcohol_preg if v1dab6k_diabetes!=1 & d159a!=1 & d163a!=1 & mz010a!=2, or
+logistic HDP alcohol_preg mat_bmi matage_del smoking_preg prepreg_smoking i.mat_edu married_bin i.parity_cat mat_ethn_bin if v1dab6k_diabetes!=1 & d159a!=1 & d163a!=1 & mz010a!=2, or
+
+* Proportions of those with gestational hypertension or preeclampsia in each drinking group
+tab hdp_cat alcohol_preg if v1dab6k_diabetes!=1 & d159a!=1 & d163a!=1 & mz010a!=2, col
+
+* Checking using a likelihood ratio test whether we need an indicator for alcohol_preg
+mlogit hdp_cat alcohol_preg mat_bmi matage_del smoking_preg prepreg_smoking i.mat_edu married_bin i.parity_cat mat_ethn_bin if v1dab6k_diabetes!=1 & d159a!=1 & d163a!=1 & mz010a!=2, base(0) rrr
+est store A
+mlogit hdp_cat i.alcohol_preg mat_bmi matage_del smoking_preg prepreg_smoking i.mat_edu married_bin i.parity_cat mat_ethn_bin if v1dab6k_diabetes!=1 & d159a!=1 & d163a!=1 & mz010a!=2, base(0) rrr
+est store B
+lrtest A B
+* The output of the likelihood ratio test if 0.3982 so we don't need both coefficients
+
+* Multinomial logistic regression analysis - alcohol consumption during pregnancy (excluding pre-pregnancy abstainers) ~ hdp_cat, unadjusted & adjusted
+mlogit hdp_cat alcohol_preg if v1dab6k_diabetes!=1 & d159a!=1 & d163a!=1 & mz010a!=2, base(0) rrr
+mlogit hdp_cat alcohol_preg mat_bmi matage_del smoking_preg prepreg_smoking i.mat_edu married_bin i.parity_cat mat_ethn_bin if v1dab6k_diabetes!=1 & d159a!=1 & d163a!=1 & mz010a!=2, base(0) rrr
+
 
 * Stop logging
 log close
